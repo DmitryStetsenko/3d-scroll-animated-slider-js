@@ -1,7 +1,10 @@
 $index: calc(1vw + 1vh);
 $gutter: 30px;
-$side-small: 26;
-$size-big: 36;
+$sideSmall: 26;
+$sideBig: 36;
+$depth: 4000px;
+$transition: .75s;
+$timingFuncTransition: cubic-bezier(.11,.73,0,1);
 
 
 * {
@@ -18,6 +21,16 @@ body {
     font-family: Raleway;
     font-size: calc(#{$index} * .8);
     line-height: 1.75;
+    height: $depth;
+    font-weight: 300;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 100;
+    text-transform: uppercase;
+    text-align: center;
+    width: min-content;
+    line-height: 1;
 }
 
 .container {
@@ -25,4 +38,63 @@ body {
     height: 100%;
     position: fixed;
     perspective: 1500;
+}
+
+.gallery {
+    transform-style: preserve-3d;
+    height: 100%;
+}
+
+.frame {
+    $base: '.frame';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: $timingFuncTransition, opacity $transition ease;
+    will-change: transform;
+    transform-style: preserve-3d;
+    &__content {
+        &_landscape {
+            #{$base}__media {
+                width: calc(#{$index} * #{$sideBig});
+                height: calc(#{$index} * #{$sideSmall});
+
+                &_left {
+                    right: calc(#{$sideBig} / 2 * #{$index} + #{$gutter});
+                }
+                &_right {
+                    left: calc(#{$sideBig} / 2 * #{$index} + #{$gutter});
+                }
+            }
+        }
+    }
+    &__title {
+        font-size: calc(#{$index} * 3.3);
+    }
+    &__media {
+        position: relative;
+        overflow: hidden;
+        width: calc(#{$index} * #{$sideSmall});
+        height: calc(#{$index} * #{$sideBig});
+        
+        img, video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        &_left {
+            right: calc(#{$sideSmall} / 2 * #{$index} + #{$gutter});
+        }
+        &_right {
+            left: calc(#{$sideSmall} / 2 * #{$index} + #{$gutter});
+        }
+    }
+
+    &_bg {
+        background: rgba(black, .9);
+    }
 }
